@@ -1,8 +1,10 @@
-import { app, shell, BrowserWindow, globalShortcut } from 'electron'
+import { app, shell, BrowserWindow, globalShortcut, Tray } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { addMenus } from './menus'
 
+let tray: Tray
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -16,6 +18,10 @@ function createWindow(): void {
       sandbox: false
     }
   })
+
+  // 注册图标
+  tray = new Tray(join(__dirname, '../../resources/icon.png'))
+  addMenus(mainWindow, tray)
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
